@@ -69,12 +69,17 @@ app.whenReady().then(() => {
 
 
   const port = new SerialPort({ path: '/dev/ttyAMA0', baudRate: 9600, parity: 'none', stopBits: 1, dataBits: 8 }) // '/dev/ttyAMA0' for Pi 3
-  port.pipe(new ReadlineParser({ delimiter: '\r\n' }))
+  // port.pipe(new ReadlineParser({ delimiter: '\r\n' }))
 
   port.on('data', (data) => {
     console.log(data);
+    const obstacle = JSON.parse(data);
 
-    mainWindow.webContents.send('v2v_receive', data)
+    mainWindow.webContents.send('v2v_receive', obstacle)
+
+    setTimeout(() => {
+      mainWindow.webContents.send('v2v_remove', '');
+    }, 5000);
   })
 
 })

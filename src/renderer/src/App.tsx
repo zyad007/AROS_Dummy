@@ -6,7 +6,11 @@ function App(): JSX.Element {
 
   useEffect(() => {
     window.electron.ipcRenderer.on('v2v_receive', (_, res) => {
-      setMessage(res)
+      setMessage(res.score)
+    })
+
+    window.electron.ipcRenderer.on('v2v_remove', (_, res) => {
+      setMessage('')
     })
   }, [])
 
@@ -20,7 +24,7 @@ function App(): JSX.Element {
             </div>
             :
             <div className="w-full h-full bg-red-700 text-white flex justify-center items-center text-5xl">
-              Warning
+              Warning {'  ' + message + '%'}
             </div>
         }
       </div>
